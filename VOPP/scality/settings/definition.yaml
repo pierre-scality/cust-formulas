@@ -1,0 +1,9 @@
+volumes: ["Shares","Trim"]
+nfsserver: 10.100.1.118
+journal: 
+  vopp1-node1: /Trim
+  vopp1-node2: /Shares
+journaldir: /journal
+georole: source
+geoparam: 
+  vopp1-node1: ['10.100.2.91','10.100.2.208']

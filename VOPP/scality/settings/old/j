@@ -1,0 +1,21 @@
+{% from "scality/settings/definition.jinja" import definition with context %}
+{% for el in definition.journal %}
+/tmp/a:
+  file.managed:
+    - contents:
+      - {{ definition.journal }} 
+      - {{ el }} 
+{% for srv,mountpoint in el %}
+{% if srv ==  grains['id'] %}
+mount nfs {{srv}} {{mountpoint}}:
+  mount.mounted:
+    - name: /journal
+    - device: {{ definition.nfsserver }}:{{mountpoint}}
+    - fstype: nfs
+    - mkmnt: True
+    - persist: True
+
+
+{% endif %}
+{% endfor %}
+{% endfor %}
