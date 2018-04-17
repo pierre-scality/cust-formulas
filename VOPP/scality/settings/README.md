@@ -7,6 +7,8 @@ Note that the volume must have been created before hand.
 
 ## Profile 
 It is stored in definition.yml
+A file definition.yaml.sample is present in the repo.
+Copy the file (but never push it to repo)
 
 ```yaml
 volumes: ["Shares","Trim"]
@@ -34,3 +36,5 @@ geoparam: describes the source/target (in order) of the replication
 	 salt-run state.orch scality.settings.orch 
 * When both sites are completed setup replication with :
 	salt-run state.orch scality.settings.orch-geo
+
+The volumes must be created before hand and have the same dev id.

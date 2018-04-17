@@ -1,7 +1,7 @@
 {% from "scality/settings/definition.jinja" import definition with context %}
+
 /etc/scality:
   file.directory
-
 
 {% for srv,ips in definition.geoparam.items() %}
 {% if srv == grains.get('id') %}
@@ -15,24 +15,40 @@
         cdmi_target_url: "http://{{ geotargetip }}"
         sfullsyncd_target_url: "http://{{ geotargetip }}:8381"
         log_level: "info"
-        journal_dir: {{ definition.journal }}
+        journal_dir: {{ definition.journaldir }}
         ship_interval_secs: 5
         retention_days: 5
     - formatter: json
     - merge_if_exists: True
     - backup: minion
 
-/tmp/a:
+add entry sagentd:
+  cmd.run:
+    - name: scality-sagentd-config -c /etc/sagentd.yaml add -n {{ srv }}-sfullsync01 -t sfullsyncd-target -H {{ geosourceip }} -p 8381
+
+scality-sagentd:
+  service.running:
+    - restart: true
+    - watch:
+      - cmd: add entry sagentd
+
+/tmp/fullsynctemp:
   file.managed:
     - contents:
-      - {{ geosourceip }}
-      - {{ geotargetip }}
+      - source {{ geosourceip }}
+      - dst {{ geotargetip }}
 
 {% endif %}
 {% endfor %}
 
 scality-dewpoint-fcgi.service:
   service.running:
+    - watch:
+      - file: /etc/scality/sfullsyncd-source.conf
+
+uwsgi:
+  service.running:
+    - enable: true
     - watch:
       - file: /etc/scality/sfullsyncd-source.conf
 
