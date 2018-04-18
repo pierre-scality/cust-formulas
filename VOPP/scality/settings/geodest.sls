@@ -30,6 +30,16 @@ scality-sfullsyncd-target:
     - merge_if_exists: True
     - backup: minion
 
+add entry sagentd:
+  cmd.run:
+    - name: scality-sagentd-config -c /etc/sagentd.yaml add -n {{ srv }}-sfullsync01 -t sfullsyncd-target -H {{ geosourceip }} -p 8381
+
+scality-sagentd:
+  service.running:
+    - restart: true
+    - watch:
+      - cmd: add entry sagentd
+
 /tmp/a:
   file.managed:
     - contents:
