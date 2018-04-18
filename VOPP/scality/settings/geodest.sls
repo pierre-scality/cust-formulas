@@ -40,6 +40,21 @@ scality-sagentd:
     - watch:
       - cmd: add entry sagentd
 
+wipe geosync entry:
+  cmd.run:
+    - sed -i  /geosync/d /etc/dewpoint-sofs.js
+
+scality-dewpoint-fcgi.service:
+  service.running:
+    - watch:
+      - file: /etc/scality/sfullsyncd-target.conf
+      - file: /etc/dewpoint-sofs.js
+
+enable scality-sfullsyncd-target:
+  service.running:
+    - name: scality-sfullsyncd-target
+    - enable: true
+
 /tmp/a:
   file.managed:
     - contents:
@@ -49,12 +64,3 @@ scality-sagentd:
 {% endif %}
 {% endfor %}
 
-scality-dewpoint-fcgi.service:
-  service.running:
-    - watch:
-      - file: /etc/scality/sfullsyncd-target.conf
-
-enable scality-sfullsyncd-target:
-  service.running:
-    - name: scality-sfullsyncd-target
-    - enable: true
