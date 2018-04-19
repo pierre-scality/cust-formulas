@@ -1,3 +1,4 @@
+logpath: /var/log
 volumes: ["Shares","Trim"]
 nfsserver: 10.100.1.118
 journal: 

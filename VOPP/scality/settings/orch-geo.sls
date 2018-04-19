@@ -4,7 +4,7 @@ configure geo sync:
     - tgt: 'roles:ROLE_CONN_CDMI'
     - tgt_type: grain
 {% if definition.georole == "source" %}
-    - sls: scality.settings.src
+    - sls: scality.settings.geosrc
 {% elif definition.georole == "destination" %}
     - sls: scality.settings.geodest
 {% endif %}
