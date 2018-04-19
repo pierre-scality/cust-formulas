@@ -38,3 +38,6 @@ geoparam: describes the source/target (in order) of the replication
 	salt-run state.orch scality.settings.orch-geo
 
 The volumes must be created before hand and have the same dev id.
+
+## TODO 
+logrotate for sfullsync logs

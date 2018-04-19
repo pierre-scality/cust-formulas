@@ -62,6 +62,12 @@ enable scality-sfullsyncd-target:
     - name: scality-sfullsyncd-target
     - enable: true
 
+rsyslog file:
+  file.managed:
+    - name: /etc/rsyslog.d/30-scality-sfullsyncd-target.conf
+    - source: salt://scality/settings/30-scality-sfullsyncd-target.conf
+    - template: jinja
+
 /tmp/a:
   file.managed:
     - contents:
