@@ -42,13 +42,20 @@ scality-sagentd:
 
 wipe geosync entry:
   cmd.run:
-    - sed -i  /geosync/d /etc/dewpoint-sofs.js
+    - name: sed -i  /geosync/d /etc/dewpoint-sofs.js
+
+
+{% if salt['pkg.version']('scality-sfullsyncd-source')  %}
+remove scality-sfullsyncd-source:
+  pkg.purged:
+    - name: scality-sfullsyncd-source
+{% endif %}
 
 scality-dewpoint-fcgi.service:
   service.running:
     - watch:
       - file: /etc/scality/sfullsyncd-target.conf
-      - file: /etc/dewpoint-sofs.js
+      - cmd: wipe geosync entry
 
 enable scality-sfullsyncd-target:
   service.running:

@@ -1,3 +1,4 @@
+{% from "scality/settings/definition.jinja" import definition with context %}
 configure geo sync:
   salt.state:
     - tgt: 'roles:ROLE_CONN_CDMI'

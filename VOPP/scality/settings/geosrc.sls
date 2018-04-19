@@ -66,6 +66,11 @@ scality-sagentd:
     - watch:
       - cmd: remove entry sagentd
 
+{% if salt['pkg.version']('scality-sfullsyncd-target') %}
+remove scality-sfullsyncd-target:
+  pkg.removed:
+    - name: scality-sfullsyncd-target
+{% endif %}
 
 /tmp/fullsynctemp:
   file.managed:
