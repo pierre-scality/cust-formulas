@@ -21,12 +21,6 @@ create share directoriesi on nfs server:
     - tgt_type: grain
     - sls: scality.settings.nfs
 
-mount journal cdmi:
-  salt.state:
-    - tgt: 'roles:ROLE_CONN_CDMI'
-    - tgt_type: grain
-    - sls: scality.settings.journal
-
 configure cdmi:
   salt.state:
     - tgt: 'roles:ROLE_CONN_CDMI'

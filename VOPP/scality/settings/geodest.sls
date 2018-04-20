@@ -10,6 +10,13 @@
 scality-sfullsyncd-target:
   pkg.installed
 
+umount journal:
+  mount.unmounted:
+    - name: {{ definition.journaldir }}
+    - persist: True
+
+/journal:
+  file.absent
 
 {% for srv,ips in definition.geoparam.items() %}
 {% if srv == grains.get('id') %}
