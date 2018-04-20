@@ -1,15 +1,14 @@
 {% from "scality/settings/definition.jinja" import definition with context %}
-
-
-{% for srv,ips in definition.geoparam.items() %}
-{% if srv == grains.get('id') %}
-{% set geosourceip = ips[0] %}
-{% set geotargetip = ips[1] %}
 /etc/scality:
   file.directory
 
 scality-sfullsyncd-source:
   pkg.installed
+
+{% for srv,ips in definition.geoparam.items() %}
+{% if srv == grains.get('id') %}
+{% set geosourceip = ips[0] %}
+{% set geotargetip = ips[1] %}
 
 /etc/scality/sfullsyncd-source.conf:
   file.serialize:
@@ -43,30 +42,12 @@ set fuse configuration:
     - merge_if_exists: True
     - backup: minion
 
-scality-dewpoint-fcgi.service:
-  service.running:
-    - watch:
-      - file: /etc/dewpoint-sofs.js
-      - file: /etc/scality/sfullsyncd-source.conf
-
-uwsgi:
-  service.running:
-    - enable: true
-    - watch:
-      - file: /etc/scality/sfullsyncd-source.conf
-
 remove entry sagentd:
   cmd.run:
     - name: scality-sagentd-config -c /etc/sagentd.yaml remove -n {{ srv }}-sfullsync01
 
-scality-sagentd:
-  service.running:
-    - restart: true
-    - watch:
-      - cmd: remove entry sagentd
-
 {% if salt['pkg.version']('scality-sfullsyncd-target') %}
-remove scality-sfullsyncd-target:
+cleanup scality-sfullsyncd-target:
   pkg.removed:
     - name: scality-sfullsyncd-target
 {% endif %}
@@ -81,9 +62,28 @@ rsyslog file:
     - watch: 
       - file: /etc/rsyslog.d/30-scality-sfullsyncd-source.conf
 
+scality-dewpoint-fcgi.service:
+  service.running:
+    - watch:
+      - file: /etc/dewpoint-sofs.js
+      - file: /etc/scality/sfullsyncd-source.conf
+
+uwsgi:
+  service.running:
+    - enable: true
+    - watch:
+      - file: /etc/scality/sfullsyncd-source.conf
+
+scality-sagentd:
+  service.running:
+    - restart: true
+    - watch:
+      - cmd: remove entry sagentd
+
 /tmp/fullsynctemp:
   file.managed:
     - contents:
+      - roles {{ definition.georole }} 
       - source {{ geosourceip }}
       - dst {{ geotargetip }}
 
