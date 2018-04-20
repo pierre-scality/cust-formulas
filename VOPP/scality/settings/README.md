@@ -11,24 +11,30 @@ A file definition.yaml.sample is present in the repo.
 Copy the file (but never push it to repo)
 
 ```yaml
+logpath: /var/log
 volumes: ["Shares","Trim"]
 nfsserver: 10.100.1.118
 journal: 
   vopp1-node1: /Trim
   vopp1-node2: /Shares
 journaldir: /journal
-georole: source
+georole: destination
 geoparam: 
-  vopp1-node1: ['10.100.2.91','10.100.2.208']
+  vopp1-node1: ['10.100.2.208','10.100.2.91']
+  vopp2-node1: ['10.100.2.208','10.100.2.91']
+  vopp1-node2: ['10.100.2.154','10.100.1.76']
+  vopp2-node2: ['10.100.2.154','10.100.1.76']
 ```
-
+logpath: Where the logs are to be stored.
 volumes : list of volume (sofs) existing to be replicated
-It must be as well a directory inside the nfs server for journal 
+  It must be as well a directory inside the nfs server for journal.
+  It will be created by the formulas
 nfsserver : nfsserver for journal 
 journal: Is the nfs server directory to mount for journal (mount nfs:/directory /journal)
 journaldir: Is the directory that will mount the journal
-geoparam: describes the source/target (in order) of the replication 
-
+geoparam: for each connector describes the source/target (in order) of the replication 
+  for earch server that will be in the synch defines source and target directory
+  In above sample vopp1 and vopp2 are 2 different groups.
 ## Usage
 
 * Edit the definition.yaml with your own settings 

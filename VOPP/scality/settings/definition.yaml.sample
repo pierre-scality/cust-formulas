@@ -3,8 +3,13 @@ volumes: ["Shares","Trim"]
 nfsserver: 10.100.1.118
 journal: 
   vopp1-node1: /Trim
+  vopp2-node1: /Trim
   vopp1-node2: /Shares
+  vopp2-node2: /Shares
 journaldir: /journal
-georole: source
+georole: destination
 geoparam: 
-  vopp1-node1: ['10.100.2.91','10.100.2.208']
+  vopp1-node1: ['10.100.2.208','10.100.2.91']
+  vopp1-node2: ['10.100.2.154','10.100.1.76']
+  vopp2-node1: ['10.100.2.208','10.100.2.91']
+  vopp2-node2: ['10.100.2.154','10.100.1.76']

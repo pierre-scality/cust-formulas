@@ -60,6 +60,7 @@ set fuse configuration:
 remove entry sagentd:
   cmd.run:
     - name: scality-sagentd-config -c /etc/sagentd.yaml remove -n {{ srv }}-sfullsync01
+    - onlyif: grep -q {{ srv }}-sfullsync01 /etc/sagentd.yaml
 
 {% if salt['pkg.version']('scality-sfullsyncd-target') %}
 cleanup scality-sfullsyncd-target:

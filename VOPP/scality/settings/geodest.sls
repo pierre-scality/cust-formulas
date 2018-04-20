@@ -40,6 +40,7 @@ umount journal:
 add entry sagentd:
   cmd.run:
     - name: scality-sagentd-config -c /etc/sagentd.yaml add -n {{ srv }}-sfullsync01 -t sfullsyncd-target -H {{ geosourceip }} -p 8381
+    - unless: grep -q {{ srv }}-sfullsync01 /etc/sagentd.yaml
 
 scality-sagentd:
   service.running:
@@ -50,6 +51,7 @@ scality-sagentd:
 wipe geosync entry:
   cmd.run:
     - name: sed -i  /geosync/d /etc/dewpoint-sofs.js
+    - onlyif: grep -q geosync /etc/dewpoint-sofs.js
 
 
 {% if salt['pkg.version']('scality-sfullsyncd-source')  %}
@@ -86,7 +88,7 @@ enable scality-sfullsyncd-target:
 /tmp/a:
   file.managed:
     - contents:
-      - role {{ georole }}
+      - role {{ definition.georole }}
       - source {{ geosourceip }}
       - dest {{ geotargetip }}
 
