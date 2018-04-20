@@ -78,8 +78,8 @@ rsyslog file:
     - template: jinja
   service.running:
     - name: rsyslog
-      - watch: 
-        - file: /etc/rsyslog.d/30-scality-sfullsyncd-source.conf
+    - watch: 
+      - file: /etc/rsyslog.d/30-scality-sfullsyncd-source.conf
 
 /tmp/fullsynctemp:
   file.managed:
