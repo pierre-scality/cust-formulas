@@ -5,11 +5,8 @@
 scality-sfullsyncd-source:
   pkg.installed
 
-
-{% for srv,ips in definition.geoparam.items() %}
+{% for srv,mountpoint in definition.journal.items() %}
 {% if srv == grains.get('id') %}
-{% set geosourceip = ips[0] %}
-{% set geotargetip = ips[1] %}
 mount nfs {{srv}} {{mountpoint}}:
   mount.mounted:
     - name: {{ definition.journaldir }}
@@ -17,6 +14,15 @@ mount nfs {{srv}} {{mountpoint}}:
     - fstype: nfs
     - mkmnt: True
     - persist: True
+{% endif %}
+{% endfor %}
+
+
+
+{% for srv,ips in definition.geoparam.items() %}
+{% if srv == grains.get('id') %}
+{% set geosourceip = ips[0] %}
+{% set geotargetip = ips[1] %}
 
 
 /etc/scality/sfullsyncd-source.conf:

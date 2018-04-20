@@ -64,11 +64,6 @@ scality-dewpoint-fcgi.service:
       - file: /etc/scality/sfullsyncd-target.conf
       - cmd: wipe geosync entry
 
-enable scality-sfullsyncd-target:
-  service.running:
-    - name: scality-sfullsyncd-target
-    - enable: true
-
 rsyslog file:
   file.managed:
     - name: /etc/rsyslog.d/30-scality-sfullsyncd-target.conf
@@ -80,11 +75,20 @@ rsyslog file:
     - watch:
       - file: /etc/rsyslog.d/30-scality-sfullsyncd-target.conf
 
+enable scality-sfullsyncd-target:
+  service.running:
+    - name: scality-sfullsyncd-target
+    - enable: true
+    - watch:
+      - file: /etc/rsyslog.d/30-scality-sfullsyncd-target.conf
+      - file: /etc/scality/sfullsyncd-target.conf
+
 /tmp/a:
   file.managed:
     - contents:
-      - {{ geosourceip }}
-      - {{ geotargetip }}
+      - role {{ georole }}
+      - source {{ geosourceip }}
+      - dest {{ geotargetip }}
 
 {% endif %}
 {% endfor %}
