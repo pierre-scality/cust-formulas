@@ -55,7 +55,6 @@ uwsgi:
     - watch:
       - file: /etc/scality/sfullsyncd-source.conf
 
-
 remove entry sagentd:
   cmd.run:
     - name: scality-sagentd-config -c /etc/sagentd.yaml remove -n {{ srv }}-sfullsync01
@@ -72,17 +71,21 @@ remove scality-sfullsyncd-target:
     - name: scality-sfullsyncd-target
 {% endif %}
 
-/tmp/fullsynctemp:
-  file.managed:
-    - contents:
-      - source {{ geosourceip }}
-      - dst {{ geotargetip }}
-
 rsyslog file:
   file.managed:
     - name: /etc/rsyslog.d/30-scality-sfullsyncd-source.conf
     - source: salt://scality/settings/30-scality-sfullsyncd-source.conf
     - template: jinja
+  service.running:
+    - name: rsyslog
+      - watch: 
+        - file: /etc/rsyslog.d/30-scality-sfullsyncd-source.conf
+
+/tmp/fullsynctemp:
+  file.managed:
+    - contents:
+      - source {{ geosourceip }}
+      - dst {{ geotargetip }}
 
 {% endif %}
 {% endfor %}

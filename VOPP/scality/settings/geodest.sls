@@ -67,6 +67,11 @@ rsyslog file:
     - name: /etc/rsyslog.d/30-scality-sfullsyncd-target.conf
     - source: salt://scality/settings/30-scality-sfullsyncd-target.conf
     - template: jinja
+  service.running:
+    - name: rsyslog
+    - restart: true
+    - watch:
+      - file: /etc/rsyslog.d/30-scality-sfullsyncd-target.conf
 
 /tmp/a:
   file.managed:
