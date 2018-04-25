@@ -4,7 +4,7 @@ set root squash:
   file.managed:
     - name: /etc/exports.conf
     - source:
-      - salt://scality/settings/root.conf
+      - salt://scality/settings/files/root.conf
 
 scality-sfused:
   service.running:

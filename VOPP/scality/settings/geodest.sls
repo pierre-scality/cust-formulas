@@ -70,7 +70,7 @@ scality-dewpoint-fcgi.service:
 rsyslog file:
   file.managed:
     - name: /etc/rsyslog.d/30-scality-sfullsyncd-target.conf
-    - source: salt://scality/settings/30-scality-sfullsyncd-target.conf
+    - source: salt://scality/settings/files/30-scality-sfullsyncd-target.conf
     - template: jinja
   service.running:
     - name: rsyslog

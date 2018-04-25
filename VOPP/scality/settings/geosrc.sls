@@ -72,7 +72,7 @@ cleanup scality-sfullsyncd-target:
 rsyslog file:
   file.managed:
     - name: /etc/rsyslog.d/30-scality-sfullsyncd-source.conf
-    - source: salt://scality/settings/30-scality-sfullsyncd-source.conf
+    - source: salt://scality/settings/files/30-scality-sfullsyncd-source.conf
     - template: jinja
   service.running:
     - name: rsyslog
