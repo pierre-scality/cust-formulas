@@ -19,3 +19,7 @@ remove journal {{ dir }}:
   file.absent:
     - name: {{ definition.journaldir }}/{{ dir }}
 {% endfor %}
+
+/journal:
+  mount.unmounted:
+    - persist: true

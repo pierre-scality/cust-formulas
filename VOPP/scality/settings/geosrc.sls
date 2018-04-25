@@ -97,6 +97,14 @@ scality-sagentd:
     - watch:
       - cmd: remove entry sagentd
 
+{% for service in ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd'] %}
+start samba {{ service }}:
+  service.running:
+    - name: {{ service }}
+    - enable: true
+{% endfor %}
+
+
 /tmp/fullsynctemp:
   file.managed:
     - contents:
