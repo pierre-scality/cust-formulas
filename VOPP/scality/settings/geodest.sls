@@ -18,7 +18,7 @@ umount journal:
 /journal:
   file.absent
 
-{% for srv,ips in definition.geoparam.items() %}
+{% for srv,ips in definition.destination.items() %}
 {% if srv == grains.get('id') %}
 {% set geosourceip = ips[0] %}
 {% set geotargetip = ips[1] %}
@@ -56,8 +56,9 @@ wipe geosync entry:
 
 {% if salt['pkg.version']('scality-sfullsyncd-source')  %}
 remove scality-sfullsyncd-source:
-  pkg.purged:
-    - name: scality-sfullsyncd-source
+  service.dead:
+    - name: uwsgi
+    - enable: false
 {% endif %}
 
 scality-dewpoint-fcgi.service:

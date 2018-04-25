@@ -19,7 +19,7 @@ mount nfs {{srv}} {{mountpoint}}:
 
 
 
-{% for srv,ips in definition.geoparam.items() %}
+{% for srv,ips in definition.source.items() %}
 {% if srv == grains.get('id') %}
 {% set geosourceip = ips[0] %}
 {% set geotargetip = ips[1] %}
@@ -64,8 +64,9 @@ remove entry sagentd:
 
 {% if salt['pkg.version']('scality-sfullsyncd-target') %}
 cleanup scality-sfullsyncd-target:
-  pkg.removed:
+  service.dead:
     - name: scality-sfullsyncd-target
+    - enable: false
 {% endif %}
 
 rsyslog file:

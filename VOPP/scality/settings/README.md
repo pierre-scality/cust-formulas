@@ -19,11 +19,13 @@ journal:
   vopp1-node2: /Shares
 journaldir: /journal
 georole: destination
-geoparam: 
+destination: 
   vopp1-node1: ['10.100.2.208','10.100.2.91']
   vopp2-node1: ['10.100.2.208','10.100.2.91']
   vopp1-node2: ['10.100.2.154','10.100.1.76']
   vopp2-node2: ['10.100.2.154','10.100.1.76']
+source:
+  ...
 ```
 logpath: Where the logs are to be stored.
 volumes : list of volume (sofs) existing to be replicated
@@ -32,7 +34,8 @@ volumes : list of volume (sofs) existing to be replicated
 nfsserver : nfsserver for journal 
 journal: Is the nfs server directory to mount for journal (mount nfs:/directory /journal)
 journaldir: Is the directory that will mount the journal
-geoparam: for each connector describes the source/target (in order) of the replication 
+georole: can be source or destination and must have a section below source/destination giving the IP
+destination/source: for each connector describes the source/target (in order) of the replication 
   for earch server that will be in the synch defines source and target directory
   In above sample vopp1 and vopp2 are 2 different groups.
 ## Usage
