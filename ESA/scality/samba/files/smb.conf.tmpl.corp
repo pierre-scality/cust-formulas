@@ -1,0 +1,81 @@
+{% from "scality/samba/samba.jinja" import samba with context%}
+[global]
+netbios name = {{ grains['id'] }}
+server string = Samba Server Version %v
+max protocol = SMB3
+workgroup = {{ samba.workgroup }}
+realm = {{ samba.realm }}
+security = ads  
+encrypt passwords = yes
+idmap config * : backend = tdb 
+idmap config * : range = 100000-299999 
+idmap config {{ samba.workgroup }} : backend = rid
+idmap config {{ samba.workgroup }} : range = 2600000-3999999
+winbind trusted domains only = no
+winbind use default domain = no 
+winbind nss info = rfc2307
+winbind enum groups = yes 
+winbind enum users = yes 
+template shell = /bin/bash 
+template homedir = /home/%D/%U 
+nt acl support = yes 
+inherit acls = Yes
+map acl inherit = Yes
+map archive = no
+map hidden = no
+map read only = no
+map system = no
+store dos attributes = yes
+inherit permissions = Yes
+vfs objects = fileid ring catia fruit streams_xattr aio_pthread acl_xattr extd_audit
+ea support = yes
+#acl map full control = yes
+access based share enum = yes
+aio write size = 1
+aio read size = 1
+
+dos charset=CP850 # Default charset for DOS client. Auto fallback to ASCII
+unix charset=UTF-8
+log file = /var/log/samba/%m.log
+max log size = 1000
+log level = 0 all:3
+guest account = nobody 
+ 
+[RING]
+comment = Main RING storage share, used for administrative purposes
+path = /ring/fs/
+valid users =  {{ samba.testuser }}
+read only = no
+
+[Trash]
+comment = Recycle bin for Scality corporate shares
+path = /ring/fs/.recycle
+valid users =  %U
+read only = no
+# https://www.samba.org/samba/docs/current/man-html/vfs_fruit.8.html
+readdir_attr:aapl_max_access = no
+# This one may be a bit intrusive. Keeping default no.
+#readdir_attr:aapl_finder_info = no
+browseable=no
+
+[ESA_Data]
+comment = Application Corporate share
+path = /ring/fs/ESA_Data
+valid users =  %U
+read only = no
+# https://www.samba.org/samba/docs/current/man-html/vfs_fruit.8.html
+readdir_attr:aapl_max_access = no
+# This one may be a bit intrusive. Keeping default no.
+#readdir_attr:aapl_finder_info = no
+
+
+[Corporate]
+comment = Application Corporate share
+path = /ring/fs/Corporate
+valid users =  %U
+read only = no
+# https://www.samba.org/samba/docs/current/man-html/vfs_fruit.8.html
+readdir_attr:aapl_max_access = no
+# This one may be a bit intrusive. Keeping default no.
+#readdir_attr:aapl_finder_info = no
+

@@ -1,0 +1,18 @@
+{% from "scality/snmpd/map.jinja" import snmpd with context %}
+
+com2sec scality default public
+group scalityGrp v1     scality
+group scalityGrp v2c    scality
+group scalityGrp usm    scality
+view all included       .1      80
+access  scalityGrp ""   any     noauth  exact   all     none    none
+createUser    Ijbz4MqqKHdUw SHA Ea2f9CNbAeCuA AES
+rouser        Ijbz4MqqKHdUw
+iquerySecName Ijbz4MqqKHdUw
+trap2sink   localhost   public
+view    systemview    included   .1.3.6.1.2.1.1
+view    systemview    included   .1.3.6.1.2.1.25.1.1
+dontLogTCPWrappersConnects yes
+includeFile /usr/share/scality-sagentd/snmpd_scality.conf
+trapsink {{ snmpd.trapsink }}
+

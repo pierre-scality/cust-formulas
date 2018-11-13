@@ -1,0 +1,72 @@
+{% from "scality/samba/samba.jinja" import samba with context%}
+[global]
+netbios name = {{ grains['id'] }}
+server string = Samba Server Version %v
+max protocol = SMB3
+workgroup = {{ samba.workgroup }}
+#realm = {{ samba.realm }}
+security = user  
+encrypt passwords = yes
+idmap config * : backend = tdb 
+idmap config * : range = 100000-299999 
+idmap config {{ samba.workgroup }} : backend = rid
+idmap config {{ samba.workgroup }} : range = 2600000-3999999
+winbind trusted domains only = no
+winbind use default domain = no 
+winbind nss info = rfc2307
+winbind enum groups = yes 
+winbind enum users = yes 
+template shell = /bin/bash 
+template homedir = /home/%D/%U 
+nt acl support = yes
+inherit acls = Yes
+map acl inherit = Yes
+map archive = no
+map hidden = no
+map read only = no
+map system = no
+store dos attributes = yes
+inherit permissions = Yes
+#acl map full control = yes
+vfs objects = fileid ring catia fruit streams_xattr aio_pthread acl_xattr extd_audit
+ea support = yes
+#acl_xattr:ignore system acls = yes
+#access based share enum = yes
+aio write size = 1
+aio read size = 1
+
+dos charset=CP850 # Default charset for DOS client. Auto fallback to ASCII
+unix charset=UTF-8
+log file = /var/log/samba/%m.log
+max log size = 100000
+log level = 0 all:3
+guest account = nobody 
+
+
+[RING]
+comment = Main RING storage share, used for administrative purposes
+path = /ring/fs/
+valid users =  {{ samba.testuser }}
+
+[DRbackup]
+comment = Test folder
+path = /ring/fs/DRbackup
+force user = scality
+read only = no
+
+[DRtest]
+comment = DR backup test share
+path = /ring/fs/DRtest
+valid user = archiware, archiwarero
+admin user = archiware
+read list = archiwarero
+read only = no
+readdir_attr:aapl_max_access = no
+
+
+[pierre]
+comment = Test folder
+path = /ring/fs/pierre
+valid users = scality
+read only = no
+

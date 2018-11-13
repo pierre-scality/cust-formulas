@@ -1,0 +1,97 @@
+{
+    "cache:0": {
+        "ring_driver": 0,
+        "size": 20000000,
+        "type": "write_through"
+    },
+    "cache:1": {
+        "ring_driver": 0,
+        "size": 1000000000,
+        "type": "write_through"
+    },
+    "cache:2": {
+        "ring_driver": 1,
+        "size": 1000000000,
+        "type": "stripe"
+    },
+    "cache:3": {
+        "ring_driver": 0,
+        "size": 1000000000,
+        "type": "write_through"
+    },
+    "general": {
+        "acl": 1,
+        "cache_check_time": 1,
+        "cache_enable_checks": true,
+        "cat_cos": 4,
+        "cat_page_cos": 4,
+        "consistent_reads": 1,
+        "dev": 3,
+        "dfree": "1000000000 1000000000",
+        "dir_cos": 4,
+        "dir_page_cos": 4,
+        "file_cos": 3,
+        "group_check": 1,
+        "honor_forget": false,
+        "inode_cache_size": 20000,
+        "max_proc_fd": 40960,
+        "n_workers": 500,
+        "ring": "DATA",
+        "rootfs": true,
+        "rootfs_cache": 0,
+        "rootfs_cos": 4,
+        "syslog_facility": "local4"
+    },
+    "ino_mode:0": {
+        "cache": 0,
+        "max_file_size": 536870912,
+        "type": "mem"
+    },
+    "ino_mode:2": {
+        "cache_md": 3,
+        "cache_stripes": 2,
+        "fsid": 1,
+        "global_dirty_limit": 2000000000,
+        "main_cos": 4,
+        "page_cos": 4,
+        "pattern": ".*",
+        "pattern_full_path": false,
+        "read_ahead": "8192ki",
+        "stripe_cos": 3,
+        "stripe_size": 4194304,
+        "type": "sparse",
+        "workers_commit": 64,
+        "workers_io": 256
+    },
+    "ino_mode:3": {
+        "cache": 1,
+        "type": "mem"
+    },
+    "lock": {
+        "type": "localdl"
+    },
+    "ring_driver:0": {
+        "bstraplist": "10.240.60.223:4253,10.240.60.221:4251,10.250.60.223:4254,10.250.60.221:4252,10.200.60.223:4255,10.200.60.221:4255,10.240.60.223:4252,10.240.60.221:4250,10.250.60.223:4255,10.250.60.221:4253",
+        "ring": "META",
+        "type": "chord"
+    },
+    "ring_driver:1": {
+        "arc_schema": 12,
+        "bstraplist": "10.240.60.223:4247,10.240.60.221:4246,10.250.60.223:4246,10.250.60.221:4245,10.200.60.223:4247,10.200.60.221:4249,10.240.60.223:4248,10.240.60.221:4247,10.250.60.223:4244,10.250.60.221:4244",
+        "main_n_workers": 250,
+        "min_data_part_length": 20000,
+        "n_coding_parts": 5,
+        "n_data_parts": 7,
+        "object_class": 3,
+        "replication_size_threshold": 60000,
+        "ring": "DATA",
+        "sub_n_workers": 250,
+        "type": "arc"
+    },
+    "transport": {
+        "big_writes": true,
+        "max_tasks": 100,
+        "mountpoint": "/ring/fs",
+        "type": "fuse"
+    }
+}
