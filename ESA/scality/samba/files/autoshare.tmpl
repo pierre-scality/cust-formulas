@@ -1,0 +1,28 @@
+{% from "scality/samba/samba.jinja" import samba with context%}
+
+{%- set sharegroup = grains['scal_share'][0] %}
+
+{%- for this in samba.shares %}
+{%- if this == sharegroup %}
+
+{%- for grain,args in samba.shares.items() %}
+{%- if sharegroup == grain %}
+{%- set ext = args[0] %}
+{%- set owner = args[1] %}
+{%- set sharelist = args[2] %}
+
+{%- for share in sharelist %}
+{%- set longdir = '/ring/fs/' + share %}
+
+[{{share}}]
+comment = Share {{share}} 
+path = {{ longdir }}
+valid users = %U
+read only = no
+{%- endfor %}
+
+{%- endif %}
+{%- endfor %}
+
+{%- endif %}
+{%- endfor %}

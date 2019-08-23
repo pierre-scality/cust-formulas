@@ -1,0 +1,51 @@
+[global]
+netbios name = {{ grains['id'] }}
+server string = Samba Server Version %v
+max protocol = SMB3
+workgroup = workgroup
+security = ads 
+encrypt passwords = yes
+idmap config * : backend = tdb 
+idmap config * : range = 100000-299999 
+winbind trusted domains only = no
+winbind use default domain = no 
+winbind nss info = rfc2307
+winbind enum groups = yes 
+winbind enum users = yes 
+template shell = /bin/bash 
+template homedir = /home/%D/%U 
+vfs objects = acl_xattr 
+nt acl support = yes 
+inherit acls = Yes
+map acl inherit = Yes
+map archive = no
+map hidden = no
+map read only = no
+map system = no
+store dos attributes = yes
+inherit permissions = Yes
+dos charset=CP850 # Default charset for DOS client. Auto fallback to ASCII
+unix charset=UTF-8
+log file = /var/log/samba/log.%m
+max log size = 1000
+log level = 0 all:3
+syslog = 0
+local master = yes
+os level = 20
+preferred master = yes
+wins support = yes
+name resolve order = host bcast
+; wins server = w.x.y.z
+; wins proxy = yes
+; dns proxy = yes
+ 
+[RING]
+comment = Main RING storage share, used for administrative purposes (ie creating top directories under Scality Volume root).
+path = /ring/fs/
+vfs objects = streams_xattr acl_xattr extd_audit
+acl_xattr:ignore system acls = yes
+valid users =  PMHPE\william
+read only = no
+aio write size = 1
+aio read size = 1
+
