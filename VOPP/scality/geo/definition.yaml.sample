@@ -1,0 +1,28 @@
+logpath: /var/log
+volumes: ["Shares","Trim"]
+nfsserver: 172.16.1.89
+
+journalnfs:
+  vopp1-node1: ["Trim","10.200.5.61"]
+  vopp1-node2: ["Trim","10.200.5.61"]
+  vopp1-node3: ["Trim","10.200.5.61"]
+  vopp2-node1: ["Trim","10.200.5.67"] 
+  vopp2-node2: ["Trim","10.200.5.67"]
+  vopp2-node3: ["Trim","10.200.5.67"]
+
+journaldir: /journal
+georole: source
+
+
+# host : cdmi source : cdmi dest  : sfullsync dest (8381)
+source:
+  #vopp1-node3: ['10.200.3.148','10.200.2.230','10.200.5.67']
+  vopp1-node3: ['vopp1-node1','vopp2-node1','vopp2-node3']
+  vopp2-node3: ['vopp2-node1','vopp1-node1','vopp1-node3']
+
+  
+# host : cdmi source (VIP if availabe) : cdmi dest (itself or VIP) : sfullsync source (8380) 
+destination:
+  vopp1-node3: ['vopp2-node1','vopp1-node1','vopp2-node3']
+  vopp2-node3: ['vopp1-node1','vopp2-node1','vopp1-node3']
+

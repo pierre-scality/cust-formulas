@@ -1,0 +1,18 @@
+{%- from "scality/zookeeper/cluster.sls" import hosts with context %}
+{%- if pillar['scality']['data_ip'] is defined %}
+{%- set myip = pillar['scality']['data_ip'] %}
+{%- else %}
+{%- set data_iface = pillar['scality']['data_iface'] %}
+{%- set myip = grains['ip4_interfaces'][data_iface][0] %}
+{%- endif %}
+monitoring_heartbeat_hosts:
+{%- for zk in hosts %}
+- {{ zk }}
+{%- endfor %}
+monitoring_watcher: true
+{%- if 'ROLE_STORE' in grains['roles'] %}
+monitoring_heartbeat: true
+monitoring_heartbeat_myip: {{ myip }}
+monitoring_heartbeat_timeout: 5
+{%- endif %}
+

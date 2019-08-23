@@ -1,0 +1,29 @@
+logpath: /var/log
+volumes: ["Trim"]
+nfsserver: 172.16.1.89
+sagentdif: be0 
+
+journalnfs:
+  scal-prd-01: ["Trim","172.16.1.89"]
+  scal-prd-02: ["Trim","172.16.1.89"]
+  scal-prd-06: ["Trim","172.16.1.89"]
+  scal-dr-01: ["Trim","192.168.35.45"] 
+  scal-dr-02: ["Trim","192.168.35.45"]
+  scal-dr-06: ["Trim","192.168.35.45"]
+
+journaldir: /journal
+georole: destination
+
+
+# host : cdmi source : cdmi dest  : sfullsync dest (8381)
+source:
+  #vopp1-node3: ['10.200.3.148','10.200.2.230','10.200.5.67']
+  scal-prd-06: ['172.16.1.87','192.168.35.43','192.168.35.42']
+  scal-dr-06: ['192.168.35.43','172.16.1.87','172.16.1.76']
+
+  
+# host : cdmi source (VIP if availabe) : cdmi dest (itself or VIP) : sfullsync source (8380) 
+destination:
+  scal-prd-06: ['192.168.35.43','172.16.1.87','192.168.35.42']
+  scal-dr-06: ['172.16.1.87','192.168.35.43','172.16.1.76']
+

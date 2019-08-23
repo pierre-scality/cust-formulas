@@ -1,0 +1,19 @@
+[Unit]
+Description=Scality sfused
+After=network.target rpcbind.service
+Requires=network.target
+
+[Service]
+LimitCORE=infinity
+EnvironmentFile=/etc/sysconfig/scality-sfused
+Type=forking
+# WA for spanning tree issue. Solved now.
+#ExecStartPre=/bin/sh -c 'until ping -c1 192.168.21.77; do sleep 1; done;'
+ExecStartPre=/usr/share/scality-sfused/lib/load-fuse-module
+ExecStart=/usr/bin/sfused -p /var/run/scality-sfused.pid -c $SFUSED_CONF $SFUSED_OPTIONS
+ExecStopPost=/usr/bin/scality-sfused-umount scality-sfused
+PIDFile=/var/run/scality-sfused.pid
+TimeoutStopSec=0
+
+[Install]
+WantedBy=multi-user.target

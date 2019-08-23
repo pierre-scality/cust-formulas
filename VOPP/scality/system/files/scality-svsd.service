@@ -1,0 +1,18 @@
+{% from "scality/local/definition.jinja" import definition with context %}
+[Unit]
+Description=Scality Virtual Server Daemon (/etc)
+After=network.target
+
+[Service]
+LimitCORE=infinity
+EnvironmentFile=/etc/sysconfig/scality-svsd
+Type=forking
+# WA for spanning tree issue. Solved now.
+# ExecStartPre=/bin/sh -c 'until ping -c1 {{ definition.nfsserver }} ; do sleep 1; done;' 
+ExecStartPre=/usr/bin/echo 1 > /proc/sys/net/ipv4/conf/all/promote_secondaries
+ExecStart=/usr/bin/svsd -c $SVSD_CONF $SVSD_OPTIONS
+TimeoutStopSec=0
+PIDFile=/var/run/scality-svsd.pid
+
+[Install]
+WantedBy=multi-user.target

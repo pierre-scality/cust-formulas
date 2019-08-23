@@ -3,11 +3,14 @@
 netbios name = {{ grains['id'] }}
 server string = Samba Server Version %v
 max protocol = SMB3
-workgroup = workgroup
-security = user  
+workgroup = {{ samba.workgroup }}
+realm = {{ samba.realm }}
+security = ads  
 encrypt passwords = yes
 idmap config * : backend = tdb 
 idmap config * : range = 100000-299999 
+idmap config OPP : backend = rid
+idmap config OPP : range = 2600000-3999999
 winbind trusted domains only = no
 winbind use default domain = no 
 winbind nss info = rfc2307
@@ -15,7 +18,6 @@ winbind enum groups = yes
 winbind enum users = yes 
 template shell = /bin/bash 
 template homedir = /home/%D/%U 
-vfs objects = acl_xattr 
 nt acl support = yes 
 inherit acls = Yes
 map acl inherit = Yes
@@ -23,21 +25,42 @@ map archive = no
 map hidden = no
 map read only = no
 map system = no
+acl map full control = yes
 store dos attributes = yes
 inherit permissions = Yes
 dos charset=CP850 # Default charset for DOS client. Auto fallback to ASCII
 unix charset=UTF-8
-log file = /var/log/samba/log.%m
-max log size = 1000
-log level = 0 all:3
+log file = /var/log/samba/%m.log
+max log size = 100000
+log level = 3
+guest account = nobody 
+vfs objects = fileid ring catia fruit streams_xattr aio_pthread acl_xattr 
+#extd_audit
+ea support = yes
+admin users = @"OPP\domain admins"
+
  
 [RING]
-comment = Main RING storage share, used for administrative purposes (ie creating top directories under Scality Volume root).
+comment = Main RING storage share, used for administrative purpose
 path = /ring/fs/
-vfs objects = streams_xattr acl_xattr extd_audit
-acl_xattr:ignore system acls = yes
 valid users =  {{ samba.testuser }}
 read only = no
 aio write size = 1
 aio read size = 1
 
+{%- for srv,args in samba.shares.items() %}
+{%- if srv == grains.get('id') %}
+{%- set shares = args[0] %}
+{%- set members = args[1] %}
+{% for share in shares %}
+[{{ share }}]
+comment = Application {{ share }} share
+path = /ring/fs/{{ share }}
+valid users =  {{ members }}
+read only = no
+aio write size = 1
+aio read size = 1
+
+{% endfor %}
+{%- endif %}
+{%- endfor %}

@@ -1,0 +1,21 @@
+{% from "scality/local/definition.jinja" import definition with context %}
+[Unit]
+Description=Dewpoint FastCGI CDMI server (/etc/)
+After=network.target journal.mount
+Requires=network.target
+
+[Service]
+LimitCORE=infinity
+EnvironmentFile=/etc/sysconfig/scality-dewpoint-fcgi
+Type=forking
+# WA for spanning tree issue. Solved now.
+# ExecStartPre=/bin/sh -c 'until ping -c1 {{ definition.nfsserver }}; do sleep 1; done;'
+# systemd bug send ok even if requires journal.mount is set. Need manual patch.
+# https://github.com/systemd/systemd/issues/7038
+ExecStartPre=/bin/sh -c 'mountpoint -q {{ definition.journaldir }} || mount {{ definition.journaldir }}'
+ExecStartPre=/usr/share/scality-dewpoint-fcgi/lib/load-fuse-module
+ExecStart=/usr/sbin/dewpoint.fcgi -p /var/run/scality-dewpoint-fcgi.pid -c $DEWPOINT_CONF $DEWPOINT_OPTIONS
+PIDFile=/var/run/scality-dewpoint-fcgi.pid
+
+[Install]
+WantedBy=multi-user.target

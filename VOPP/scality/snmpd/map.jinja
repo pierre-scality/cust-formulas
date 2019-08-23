@@ -1,0 +1,23 @@
+{% set snmpd = salt['grains.filter_by']({
+    'Debian': {
+        'pkg': 'snmpd',
+        'service': 'snmpd',
+        'main_config': '/etc/snmp/snmpd.conf',
+        'default_opts_file': '/etc/default/snmpd',
+        'default_opts': '-Lsd -Lf /dev/null -m+/usr/share/snmp/mibs/scality.mib  -u root -g root -I -smux -p /var/run/snmpd.pid',
+        'scality_config': '/usr/share/scality-sagentd/snmpd_scality.conf',
+        'trapsinkenable': False,
+	'trapsink': salt['pillar.get']('scality:supervisor_ip')
+    },
+    'RedHat': {
+        'pkg': 'net-snmp',
+        'service': 'snmpd',
+        'main_config': '/etc/snmp/snmpd.conf',
+        'default_opts_file': '/etc/sysconfig/snmpd',
+        'default_opts': '-Lsd -Lf /dev/null -m+/usr/share/snmp/mibs/scality.mib  -u root -g root -I -smux -p /var/run/snmpd.pid',
+        'scality_config': '/usr/share/scality-sagentd/snmpd_scality.conf',
+        'trapsinkenable': True,
+	'trapsink': salt['pillar.get']('scality:supervisor_ip')
+    },
+
+}, merge=salt['pillar.get']('snmpd:lookup')) %}
