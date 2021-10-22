@@ -1,6 +1,0 @@
-fuse: ['08.scality-sfused',' 55.stop_scality-sfused
-cdmi: ['40.scality-dewpoint-fcgi']
-cifs-local: ['08.scality-sfused','50.samba','55.stop_scality-sfused']
-cifs-ad: ['08.scality-sfused','50.samba','55.stop_scality-sfused','49.winbind']
-nfsv3: ['08.scality-sfused','55.stop_scality-sfused']
-nfsv4: ['45.scality-nfs-ganeshaa']
