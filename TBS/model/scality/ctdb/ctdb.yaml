@@ -1,0 +1,28 @@
+floatingip: ['10.240.117.22','10.240.117.23']
+floatingif: nm-team1-CTRL
+floatingmask: 24
+zkclustername: mdlsyd04ctdb01
+clustername: mdlsyd04ctdb01
+realm: model.dbs.tv
+workgroup: model
+sfusedquota: False
+sfusedconf: /etc/scality/sfused.conf
+disabled: ['scality-sfused','sernet-samba-smbd','sernet-samba-nmbd','sernet-samba-winbindd']
+ctdbtype: cifs-ad
+# ctdb services to enable depending on what ctdb is used for
+ctdbsvc:
+  fuse: ['08.scality-sfused',' 55.stop_scality-sfused']
+  cdmi: ['40.scality-dewpoint-fcgi']
+  cifs-local: ['08.scality-sfused','50.samba','55.stop_scality-sfused']
+  cifs-ad: ['08.scality-sfused','50.samba','55.stop_scality-sfused','49.winbind']
+  nfsv3: ['08.scality-sfused','55.stop_scality-sfused']
+  nfsv4: ['45.scality-nfs-ganeshaa']
+
+shares:
+  test: ['/ring/fs/test','MODEL\wassim.sawan,@"MODEL\storage admins",@"MODEL\domain admins"']
+  Shared: ['/ring/fs/Model/Shared','@"MODEL\storage admins",@"MODEL\domain admins"']
+  Admin: ['/ring/fs/Model/Admin','@"MODEL\storage admins",@"MODEL\domain admins"']
+  UAT: ['/ring/fs/Model/UAT','@"MODEL\storage admins",@"MODEL\domain admins"']
+  
+
+##test: ['/ring/fs/test','MODEL\pierre.merle,@MODEL\storage admins,@MODEL\domain admins']

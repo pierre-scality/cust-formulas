@@ -1,0 +1,46 @@
+sfusedquota: False
+sfusedconf: /etc/scality/sfused.conf
+disabled: ['scality-sfused','sernet-samba-smbd','sernet-samba-nmbd','sernet-samba-winbindd']
+restartctdb: True
+ctdbtype: cifs-ad
+# ctdb services to enable depending on what ctdb is used for
+ctdbsvc:
+  fuse: ['08.scality-sfused',' 55.stop_scality-sfused']
+  cdmi: ['40.scality-dewpoint-fcgi']
+  cifs-local: ['08.scality-sfused','50.samba','55.stop_scality-sfused']
+  cifs-ad: ['08.scality-sfused','50.samba','55.stop_scality-sfused','49.winbind']
+  nfsv3: ['08.scality-sfused','55.stop_scality-sfused']
+  nfsv4: ['45.scality-nfs-ganeshaa']
+
+# grain scal_share
+
+shares:
+  shared:
+    Admin: ['/ring/fs/Prod/Admin','@"PROD\storage admins",@"PROD\domain admins"',["",'"PROD\storage admins"']]
+    Shared: ['/ring/fs/Prod/Shared','@"PROD\storage admins",@"PROD\domain admins"',["",'"PROD\storage admins"']]
+  sbs:
+    115: ['/ring/fs/Prod/115','@"PROD\storage admins",@"PROD\domain admins"',["",'"PROD\storage admins"']]
+  prime:
+    116: ['/ring/fs/Prod/116','@"PROD\storage admins",@"PROD\domain admins"',["",'"PROD\storage admins"']]
+
+# grain scal_dc 
+vip:
+  sbs:
+    PS: [['10.208.115.31','10.208.115.32','10.208.115.33'],24,"nm-team1-CTRL"]
+    ND: [['10.212.115.31','10.212.115.32','10.212.115.33'],24,"nm-team1-CTRL"]
+  shared:
+    PS: [['10.208.10.31','10.208.10.32'],24,"nm-team1-CTRL"]
+    ND: [['10.212.10.31','10.212.10.32'],24,"nm-team1-CTRL"]
+  prime:
+    PS: [['10.208.116.31'],24,"nm-team1-CTRL"]
+    ND: [['10.212.116.31'],24,"nm-team1-CTRL"]
+
+nodes:
+  shared: ['10.212.10.21','10.208.10.21','10.208.10.22','10.212.10.22']
+  sbs: ['10.208.115.21','10.208.115.22','10.208.115.23','10.212.115.21','10.212.115.22','10.212.115.23']
+  prime: ['10.208.116.21','10.212.116.21']  
+
+cluster:
+  shared: ['SYDCTDB','PROD.DBS.TV','PROD']
+  sbs: ['115SYDCTDB','PROD.DBS.TV','PROD']
+  prime: ['116SYDCTDB','PROD.DBS.TV','PROD']

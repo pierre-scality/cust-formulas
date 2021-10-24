@@ -1,0 +1,19 @@
+nssmode: "files winbind"
+search: dns.search.dn
+nameserver: ['10.100.1.1','10.100.1.2','10.100.1.3']
+floatingip: ['10.240.117.21','10.240.117.20']
+floatingif: nm-team1
+testuser: model\\pierre.merle
+testgroup: scality
+processes: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
+dlm8: false
+# leave empty interface if you prefer use network
+dlm8_interface: None
+dlm8_network: 10.200.0.0/16
+sfusedconf: /etc/scality/sfused.conf
+sfusedquota: true
+ad: true
+realm: model.dbs.tv
+addomain: model
+dnsserver: 10.200.4.135
+forcedns: false
